@@ -15,7 +15,7 @@
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property(strong,nonatomic )UITableView *customTableView;
 @property(strong,nonatomic )UIImageView *imageView;
-@property(strong,nonatomic )UIVisualEffect *effectView;
+@property(strong,nonatomic )UIVisualEffectView *effectView;
 @property(strong,nonatomic )UIImage *image;
 @property(strong,nonatomic )NSArray *dataSOurceArr;
 @end
@@ -36,11 +36,18 @@
     self.imageView = ({
         UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, -220, kScreenWidth, 220)];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
-//        imageView.
+        //        imageView.
         imageView.clipsToBounds = YES;
         imageView.image = self.image;
         imageView;
     });
+    
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    self.effectView = [[UIVisualEffectView alloc]initWithEffect:effect];
+    self.effectView.frame = self.imageView.frame;
+    [self.customTableView addSubview:self.effectView];
+    
+    
     
     self.customTableView = ({
         UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) style:UITableViewStylePlain];
@@ -61,11 +68,13 @@
 #pragma UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-   
-    CGFloat off_y = scrollView.contentOffset.y;
-        CGRect frame = self.imageView.frame;
     
-        self.imageView.frame = CGRectMake(0, off_y, frame.size.width, -off_y);
+    CGFloat off_y = scrollView.contentOffset.y;
+    CGRect frame = self.imageView.frame;
+    
+    self.imageView.frame = CGRectMake(0, off_y, frame.size.width, -off_y);
+    self.effectView.frame = CGRectMake(0, off_y, frame.size.width, -off_y);
+    self.effectView.alpha = 1 + (off_y + self.imageView.frame.size.height) / kScreenHeight ;
 }
 #pragma mark:UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
