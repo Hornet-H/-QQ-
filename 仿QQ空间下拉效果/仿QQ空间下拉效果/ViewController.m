@@ -41,11 +41,7 @@
         imageView.image = self.image;
         imageView;
     });
-    
-    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    self.effectView = [[UIVisualEffectView alloc]initWithEffect:effect];
-    self.effectView.frame = self.imageView.frame;
-    [self.customTableView addSubview:self.effectView];
+   
     
     
     
@@ -61,6 +57,11 @@
     });
     
     
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    self.effectView = [[UIVisualEffectView alloc]initWithEffect:effect];
+    self.effectView.frame = self.imageView.frame;
+    self.effectView.alpha = 0;
+    [self.customTableView addSubview:self.effectView];
     [self.customTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
     
     [self.view addSubview:self.customTableView];
@@ -74,7 +75,8 @@
     
     self.imageView.frame = CGRectMake(0, off_y, frame.size.width, -off_y);
     self.effectView.frame = CGRectMake(0, off_y, frame.size.width, -off_y);
-    self.effectView.alpha = 1 + (off_y + self.imageView.frame.size.height) / kScreenHeight ;
+    NSLog(@"%zd",(off_y + self.imageView.frame.size.height) / kScreenHeight);
+    self.effectView.alpha = (self.imageView.frame.size.height) / 200 - 1 ;
 }
 #pragma mark:UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
